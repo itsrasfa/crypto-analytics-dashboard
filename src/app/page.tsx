@@ -89,7 +89,7 @@ export default function DashboardPage() {
         />
         <SummaryCard
           title={labels.totalVolume}
-          value={highest.total_volume.toLocaleString(
+          value={(highest.total_volume * exchangeRate).toLocaleString(
             language === 'pt' ? 'pt-BR' : 'en-US',
             {
               style: 'currency',

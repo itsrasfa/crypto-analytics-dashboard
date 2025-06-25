@@ -25,12 +25,12 @@ const sortOptionsEn: { key: keyof Coin; label: string }[] = [
   { key: 'name', label: 'Name' },
 ];
 
-export function CryptoTable({
+export const  CryptoTable = ({
   coins,
   currency,
   exchangeRate,
   language,
-}: CryptoTableProps) {
+}: CryptoTableProps) => {
   const [sortKey, setSortKey] = useState<keyof Coin>('market_cap');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
 

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { api } from '@/lib/api';
 
-export function useExchangeRate(from = 'USD', to = 'BRL') {
+export const useExchangeRate  = (from = 'USD', to = 'BRL') => {
   const [rate, setRate] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);

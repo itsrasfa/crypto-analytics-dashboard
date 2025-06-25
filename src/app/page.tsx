@@ -64,13 +64,13 @@ export default function DashboardPage() {
     <>
       <main className="p-4 sm:p-6 bg-black min-h-screen text-white max-w-7xl mx-auto">
         <header className="flex items-center justify-between mb-6 p-5 rounded-lg bg-white/5 backdrop-blur-md shadow-lg">
-          <h1 className="text-2xl sm:text-3xl font-bold text-[#8B79F7]">
+          <h1 className="text-xl sm:text-3xl font-bold text-[#8B79F7]">
             {language === 'pt' ? 'Análise de Criptomoedas' : 'Crypto Analytics'}
           </h1>
           <button
             onClick={toggleBoth}
             aria-label="Toggle language and currency"
-            className="flex items-center gap-2 px-4 py-2 rounded-lg bg-white/2 hover:bg-white/5 transition-colors duration-300 backdrop-blur-lg shadow-lg font-semibold text-sm cursor-pointer"
+            className="flex items-center justify-center w-[100px] gap-2 px-4 py-2 rounded-lg bg-white/2 hover:bg-white/5 transition-colors duration-300 backdrop-blur-lg shadow-lg font-semibold text-sm cursor-pointer"
           >
             {language === 'pt' ? '🇧🇷 PT ' : '🇺🇸 EN'}
           </button>

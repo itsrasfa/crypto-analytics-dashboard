@@ -38,7 +38,12 @@ export default function DashboardPage() {
     }
   }, [rate, rateError, setExchangeRate]);
 
-  if (coinsLoading) return <div className="text-white">Loading...</div>;
+  if (coinsLoading)
+    return (
+      <div className="text-white text-center py-20">
+        <BeatLoader size={20} color="#8B79F7" />
+      </div>
+    );
 
   const highest = coins[0];
   const lowest = [...coins].sort(

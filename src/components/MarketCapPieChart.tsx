@@ -7,6 +7,7 @@ interface PieChartMarketCapProps {
     id: string;
     name: string;
     market_cap: number;
+    symbol: string;
   }[];
   exchangeRate: number;
   currency: 'BRL' | 'USD';
@@ -23,6 +24,7 @@ export const MarketCapPieChart = ({
   const data = top5.map((coin) => ({
     name: coin.name,
     value: coin.market_cap * exchangeRate,
+    symbol: coin.symbol.toUpperCase(),
   }));
 
   const title =
@@ -42,8 +44,8 @@ export const MarketCapPieChart = ({
             cx="50%"
             cy="50%"
             outerRadius={120}
-            label={({ name, percent }) =>
-              `${name}: ${(percent! * 100).toFixed(0)}%`
+            label={({ symbol, percent }) =>
+              `${symbol}: ${(percent! * 100).toFixed(0)}%`
             }
             labelLine={false}
           >

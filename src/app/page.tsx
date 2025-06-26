@@ -70,9 +70,22 @@ export default function DashboardPage() {
           <button
             onClick={toggleBoth}
             aria-label="Toggle language and currency"
-            className="flex items-center justify-center w-[100px] gap-2 px-4 py-2 rounded-lg bg-white/2 hover:bg-white/5 transition-colors duration-300 backdrop-blur-lg shadow-lg font-semibold text-sm cursor-pointer"
+            className="relative w-16 h-8 bg-white/20 rounded-full cursor-pointer transition-colors duration-300 shadow-lg"
           >
-            {language === 'pt' ? '🇧🇷 PT ' : '🇺🇸 EN'}
+            <span
+              className={`absolute top-1 left-1 w-6 h-6 bg-white rounded-full shadow-md transition-transform duration-300 ${
+                language === 'pt' ? 'translate-x-0' : 'translate-x-8'
+              }`}
+            />
+            {language === 'pt' ? (
+              <span className="absolute right-2 top-1/2 -translate-y-1/2 select-none">
+                🇧🇷
+              </span>
+            ) : (
+              <span className="absolute left-2 top-1/2 -translate-y-1/2 select-none">
+                🇺🇸
+              </span>
+            )}
           </button>
         </header>
 
@@ -132,6 +145,8 @@ export default function DashboardPage() {
               data={priceHistory}
               coinName={language === 'pt' ? 'Bitcoin' : 'Bitcoin'}
               days={days}
+              currency={currency}
+              language={language}
               exchangeRate={exchangeRate}
             />
           )}

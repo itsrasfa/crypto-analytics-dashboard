@@ -12,14 +12,29 @@ interface ChartProps {
   data: { time: string; price: number }[];
   coinName: string;
   days: number;
-  exchangeRate: number; 
+  exchangeRate: number;
+  currency: 'BRL' | 'USD';
+  language: 'pt' | 'en';
 }
 
-export const Chart = ({ data, coinName, days, exchangeRate }: ChartProps) => {
-  const convertedData = data.map(({ time, price }) => ({
-    time,
-    price: price * exchangeRate,
-  }));
+export const Chart = ({
+  data,
+  coinName,
+  days,
+  exchangeRate,
+  currency,
+  language,
+}: ChartProps) => {
+  const safeCurrency = currency || 'USD';
+
+  const convertedData = data.map(({ time, price }) => {
+    const [day, month] = time.split('/');
+
+    const formattedTime =
+      language === 'pt' ? `${day}/${month}` : `${month}/${day}`;
+
+    return { time: formattedTime, price: price * exchangeRate };
+  });
 
   return (
     <div
@@ -27,7 +42,9 @@ export const Chart = ({ data, coinName, days, exchangeRate }: ChartProps) => {
       style={{ backgroundColor: '#101110' }}
     >
       <h2 className="text-lg sm:text-2xl font-bold mb-4 sm:mb-6 text-white">
-        Preço de {coinName} (Últimos {days} dias)
+        {language === 'pt'
+          ? `Preço de ${coinName} (Últimos ${days} dias)`
+          : `${coinName} Price (Last ${days} days)`}
       </h2>
 
       <div className="w-full h-[220px] sm:h-[320px]">
@@ -54,7 +71,7 @@ export const Chart = ({ data, coinName, days, exchangeRate }: ChartProps) => {
               tickFormatter={(value) =>
                 value.toLocaleString('pt-BR', {
                   style: 'currency',
-                  currency: 'BRL',
+                  currency: safeCurrency,
                   maximumFractionDigits: 0,
                 })
               }
@@ -73,12 +90,14 @@ export const Chart = ({ data, coinName, days, exchangeRate }: ChartProps) => {
               formatter={(value: number) =>
                 value.toLocaleString('pt-BR', {
                   style: 'currency',
-                  currency: 'BRL',
+                  currency: safeCurrency,
                   minimumFractionDigits: 2,
                   maximumFractionDigits: 2,
                 })
               }
-              labelFormatter={(label) => `Data: ${label}`}
+              labelFormatter={(label) =>
+                language === 'pt' ? `Data: ${label}` : `Date: ${label}`
+              }
               labelStyle={{ color: '#aaa' }}
               cursor={{ stroke: '#CCFA29', strokeWidth: 2, opacity: 0.2 }}
             />

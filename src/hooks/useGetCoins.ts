@@ -17,31 +17,34 @@ export interface Coin {
   atl?: number;
 }
 
-
 export const useGetCoins = () => {
   const { coins, setCoins, loading, setLoading } = useCoinStore();
 
   useEffect(() => {
-    async function fetchCoins() {
-      if (coins.length) return;
-      setLoading(true);
+    if (coins.length) return;
 
-      const coinsRes = await api.get("/coins/markets", {
-        params: {
-          vs_currency: "usd",
-          order: "market_cap_desc",
-          per_page: 10,
-          page: 1,
-          sparkline: false,
-        },
-      });
-
-      setCoins(coinsRes.data);
-      setLoading(false);
-    }
+    const fetchCoins = async () => {
+      try {
+        setLoading(true);
+        const { data } = await api.get("/coins/markets", {
+          params: {
+            vs_currency: "usd",
+            order: "market_cap_desc",
+            per_page: 10,
+            page: 1,
+            sparkline: false,
+          },
+        });
+        setCoins(data);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
 
     fetchCoins();
-  }, [coins, setCoins, setLoading]);
+  }, [coins.length, setCoins, setLoading]);
 
   return { coins, loading };
-}
+};

@@ -38,21 +38,35 @@ export const MarketCapPieChart = ({
   };
 
   const top5 = coins.slice(0, 5);
-  const data = top5.map((coin) => ({
-    name: coin.name,
-    value: Number(coin.market_cap) * Number(exchangeRate) || 0,
-    symbol: coin.symbol.toUpperCase(),
-    color: COIN_COLORS[coin.id] ?? '#888888',
-  }));
+
+  const totalValue = top5.reduce(
+    (sum, coin) => sum + Number(coin.market_cap) * Number(exchangeRate),
+    0,
+  );
+
+  const data = top5.map((coin) => {
+    const value = Number(coin.market_cap) * Number(exchangeRate) || 0;
+    return {
+      name: coin.name,
+      value,
+      percent: value / totalValue,
+      symbol: coin.symbol.toUpperCase(),
+      color: COIN_COLORS[coin.id] ?? '#888888',
+    };
+  });
 
   const title =
     language === 'pt'
       ? 'Top 5 Moedas por Valor de Mercado'
       : 'Top 5 Market Cap Coins';
 
+  const percentLabel = (percent: number) =>
+    `${(percent * 100).toFixed(1).replace('.', ',')}%`;
+
   return (
     <div className="shadow-lg bg-white/5 backdrop-blur-md p-4 rounded-lg mt-2 text-white">
       <h2 className="text-xl font-semibold mb-4">{title}</h2>
+
       <ResponsiveContainer width="100%" height={360}>
         <PieChart>
           <Pie
@@ -63,11 +77,14 @@ export const MarketCapPieChart = ({
             cy="40%"
             outerRadius={120}
             labelLine={false}
+            label={({ percent }) => percentLabel(percent ?? 0)}
+
           >
             {data.map((entry, i) => (
               <Cell key={`cell-${i}`} fill={entry.color} />
             ))}
           </Pie>
+
           <Tooltip
             contentStyle={{
               border: 'none',
@@ -86,6 +103,7 @@ export const MarketCapPieChart = ({
             ]}
             cursor={{ fill: 'rgba(255,255,255,0.1)' }}
           />
+
           <Legend
             verticalAlign="bottom"
             height={60}

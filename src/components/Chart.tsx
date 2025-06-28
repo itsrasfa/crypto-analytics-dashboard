@@ -29,12 +29,16 @@ export const Chart = ({
 
   const convertedData = data.map(({ time, price }) => {
     const [day, month] = time.split('/');
-
     const formattedTime =
       language === 'pt' ? `${day}/${month}` : `${month}/${day}`;
 
-    return { time: formattedTime, price: price * exchangeRate };
+    return {
+      time: formattedTime,
+      convertedPrice: price * exchangeRate,
+    };
   });
+
+  const priceLabel = language === 'pt' ? 'Preço' : 'Price';
 
   return (
     <div
@@ -76,6 +80,13 @@ export const Chart = ({
                 })
               }
               width={70}
+              label={{
+                value: priceLabel,
+                angle: -90,
+                position: 'insideLeft',
+                fill: '#bbb',
+                fontSize: 14,
+              }}
             />
             <Tooltip
               contentStyle={{
@@ -103,7 +114,8 @@ export const Chart = ({
             />
             <Area
               type="monotone"
-              dataKey="price"
+              dataKey="convertedPrice"
+              name={priceLabel}
               stroke="#CCFA29"
               fill="url(#gradient)"
               strokeWidth={3}
